@@ -268,15 +268,16 @@ class CarPhotographyPortfolio {
             for (const shoot of window.portfolioConfig.shoots) {
                 const shootImages = [];
                 
-                // Auto-detect images if no images array provided
+                // If images are explicitly configured, use them (no auto-detection)
                 let imagesToProcess = [];
                 
                 if (shoot.images && shoot.images.length > 0) {
-                    // Use provided images list
+                    // Use provided images list - no auto-detection needed
                     imagesToProcess = shoot.images;
+                    console.log(`✅ Using ${imagesToProcess.length} configured images for ${shoot.title} (skipping auto-detection)`);
                 } else {
-                    // Auto-detect all images in the folder
-                    console.log(`Auto-detecting images in folder: ${shoot.folder}`);
+                    // Only auto-detect if no images are configured
+                    console.log(`No images configured for ${shoot.title}, auto-detecting...`);
                     imagesToProcess = await this.autoDetectImagesInFolder(shoot.folder);
                 }
                 
@@ -329,6 +330,7 @@ class CarPhotographyPortfolio {
             }
             
             if (imageList.length > 0) {
+                console.log(`✅ Successfully loaded ${imageList.length} images from configuration`);
                 return imageList;
             }
         }
@@ -374,54 +376,7 @@ class CarPhotographyPortfolio {
             }
         }
 
-        // Final fallback: Your actual photos that we found in the directory
-        const actualPhotos = [
-            'Light-16.jpg',
-            'Light-17.jpg',
-            'Light-18.jpg',
-            'Light-19.jpg',
-            'Light-20.jpg',
-            'Light-21.jpg',
-            'Light-22.jpg',
-            'Light-23.jpg'
-        ];
-
-        console.log('Trying to load your photos (fallback)...');
-        for (const filename of actualPhotos) {
-            const imagePath = 'photos/' + filename;
-            
-            try {
-                const imageExists = await this.checkImageExists(imagePath);
-                if (imageExists) {
-                    const imageData = {
-                        src: imagePath,
-                        name: this.formatImageName(filename),
-                        filename: filename,
-                        shootId: 'light-series',
-                        shootTitle: 'Light Studies',
-                        shootDescription: 'Exploring automotive forms through dramatic lighting'
-                    };
-                    imageList.push(imageData);
-                    console.log(`✓ Loaded: ${filename}`);
-                }
-            } catch (error) {
-                console.log(`✗ Could not load ${filename}`);
-                continue;
-            }
-        }
-
-        if (imageList.length > 0) {
-            this.shoots.push({
-                id: 'light-series',
-                title: 'Light Studies',
-                description: 'Exploring automotive forms through dramatic lighting',
-                folder: 'photos/',
-                coverImage: 'Light-16.jpg',
-                coverColor: '#1a1a2e',
-                images: imageList
-            });
-        }
-
+        console.log('⚠️ No configured images found, skipping fallback to prevent 404s');
         console.log(`Total images found: ${imageList.length}`);
         console.log(`Total shoots: ${this.shoots.length}`);
         return imageList;
@@ -440,11 +395,11 @@ class CarPhotographyPortfolio {
             };
             img.src = imagePath;
             
-            // Add timeout to prevent hanging
+            // Reduced timeout to prevent hanging and reduce failed requests
             setTimeout(() => {
                 console.log(`⏱ Timeout for image: ${imagePath}`);
                 resolve(false);
-            }, 5000);
+            }, 2000); // Reduced from 5000ms to 2000ms
         });
     }
 
@@ -1138,41 +1093,24 @@ class CarPhotographyPortfolio {
         console.log(`🔍 Auto-detecting images in folder: ${folderPath}`);
         const detectedImages = [];
         
-        // Comprehensive image naming patterns to try
-        const patterns = [
-            // Your specific patterns (case-sensitive and case variations)
-            'Light-1', 'Light-2', 'Light-3', 'Light-4', 'Light-5', 'Light-6', 'Light-7', 'Light-8', 'Light-9', 'Light-10',
-            'Light-11', 'Light-12', 'Light-13', 'Light-14', 'Light-15', 'Light-16', 'Light-17', 'Light-18', 'Light-19', 'Light-20',
-            'Light-21', 'Light-22', 'Light-23', 'Light-24', 'Light-25', 'Light-26', 'Light-27', 'Light-28', 'Light-29', 'Light-30',
-            'Light-31', 'Light-32', 'Light-33', 'Light-34', 'Light-35', 'Light-36', 'Light-37', 'Light-38', 'Light-39', 'Light-40',
-            'light-1', 'light-2', 'light-3', 'light-4', 'light-5', 'light-6', 'light-7', 'light-8', 'light-9', 'light-10',
-            'hero-shot', 'cover', 'main',
-            // Common patterns from cameras/exports
-            'DSC_0001', 'DSC_0002', 'DSC_0003', 'DSC_0004', 'DSC_0005', 'DSC_0006', 'DSC_0007', 'DSC_0008', 'DSC_0009', 'DSC_0010',
-            'IMG_0001', 'IMG_0002', 'IMG_0003', 'IMG_0004', 'IMG_0005', 'IMG_0006', 'IMG_0007', 'IMG_0008', 'IMG_0009', 'IMG_0010',
-            '_DSC0001', '_DSC0002', '_DSC0003', '_DSC0004', '_DSC0005', '_DSC0006', '_DSC0007', '_DSC0008', '_DSC0009', '_DSC0010',
-            // Sony A7R III typical patterns
-            'DSC00001', 'DSC00002', 'DSC00003', 'DSC00004', 'DSC00005', 'DSC00006', 'DSC00007', 'DSC00008', 'DSC00009', 'DSC00010',
-            'DSC01234', 'DSC05678', 'DSC09876', // Random Sony patterns
-            // Generic patterns
-            '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20',
-            'img1', 'img2', 'img3', 'img4', 'img5', 'img6', 'img7', 'img8', 'img9', 'img10',
-            'image1', 'image2', 'image3', 'image4', 'image5', 'image6', 'image7', 'image8', 'image9', 'image10',
-            'photo1', 'photo2', 'photo3', 'photo4', 'photo5', 'photo6', 'photo7', 'photo8', 'photo9', 'photo10',
-            // Car specific
-            'exterior-1', 'exterior-2', 'interior-1', 'interior-2', 'detail-1', 'detail-2',
-            'front', 'rear', 'side', 'profile', 'cockpit', 'wheel', 'engine',
-            'front-angle', 'rear-view', 'side-profile', 'wheel-detail',
-            // Lightroom/export patterns
-            'export-1', 'export-2', 'export-3', 'export-4', 'export-5',
-            'edited-1', 'edited-2', 'edited-3', 'edited-4', 'edited-5'
-        ];
-
-        // Also try scanning with wildcard-like patterns (simulate trying many numbers)
-        for (let i = 1; i <= 100; i++) {
-            patterns.push(`DSC${i.toString().padStart(5, '0')}`); // DSC00001 to DSC00100
-            patterns.push(`IMG_${i.toString().padStart(4, '0')}`); // IMG_0001 to IMG_0100
-            patterns.push(`_DSC${i.toString().padStart(4, '0')}`); // _DSC0001 to _DSC0100
+        // Folder-specific patterns based on your actual images
+        let patterns = [];
+        
+        if (folderPath.includes('audi-a3')) {
+            // Known Audi A3 images from your folder
+            patterns = ['A3-1', 'A3-2', 'A3-3', 'A3-5', 'A3-6', 'A3-7', 'hero'];
+        } else if (folderPath.includes('porsche-gt3rs')) {
+            // Known Porsche GT3RS images from your folder
+            patterns = ['GT3RS-08', 'GT3RS-09', 'GT3RS-10', 'GT3RS-11', 'GT3RS-12', 'GT3RS-14', 'hero'];
+        } else {
+            // Minimal fallback patterns for unknown folders
+            patterns = [
+                'hero', 'cover', 'main',
+                // Only try first few common patterns
+                '1', '2', '3', '4', '5',
+                'img1', 'img2', 'img3', 'img4', 'img5',
+                'photo1', 'photo2', 'photo3', 'photo4', 'photo5'
+            ];
         }
 
         // Try different formats for each pattern

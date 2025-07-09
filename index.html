@@ -4,8 +4,23 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Simon Hajduk Photography - @CarsfromWa</title>
-    <meta name="description" content="Fllow @CarsfromWa">
-    <meta name="keywords" content="car photography, automotive photography, Western Australia, @CarsfromWa, Simon Hajduk, luxury cars, portfolio">
+    <meta name="description" content="Follow @CarsfromWa - Professional automotive photography from Western Australia showcasing luxury cars and supercars">
+    <meta name="keywords" content="car photography, automotive photography, Western Australia, @CarsfromWa, Simon Hajduk, luxury cars, portfolio, Porsche, Audi">
+    
+    <!-- Open Graph meta tags for social media -->
+    <meta property="og:title" content="Simon Hajduk Photography - @CarsfromWa">
+    <meta property="og:description" content="Professional automotive photography from Western Australia showcasing luxury cars and supercars">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://simonhajd.github.io/PhotoWebsite/">
+    <meta property="og:image" content="https://simonhajd.github.io/PhotoWebsite/photos/porsche-gt3rs/hero.jpg">
+    <meta property="og:site_name" content="@CarsfromWa Photography">
+    
+    <!-- Twitter Card meta tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Simon Hajduk Photography - @CarsfromWa">
+    <meta name="twitter:description" content="Professional automotive photography from Western Australia">
+    <meta name="twitter:image" content="https://simonhajd.github.io/PhotoWebsite/photos/porsche-gt3rs/hero.jpg">
+    <meta name="twitter:site" content="@CarsfromWa">
     
     <!-- Preload critical fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -64,7 +79,7 @@
             <div class="hero-background"></div>
             <div class="hero-content">
                 <h2 class="hero-title">@CarsfromWa</h2>
-                <p class="hero-subtitle"></p>
+                <p class="hero-subtitle">Automotive Photography • Western Australia</p>
             </div>
         </section>
 
@@ -86,9 +101,10 @@
                 <div class="no-images" id="no-images" style="display: none;">
                     <div class="no-images-content">
                         <div class="no-images-icon">📸</div>
-                        <h4>Gallery Coming Soon</h4>
-                        <p>Add your stunning car photos to the <code>photos/</code> folder to see them here.</p>
-                        <small>Supported formats: JPG, PNG, WebP</small>
+                        <h4>Gallery Loading...</h4>
+                        <p>Your automotive photography collection is being prepared.</p>
+                        <p>If this message persists, please check the console for loading details.</p>
+                        <small>Expected: Porsche GT3 RS and Audi A3 collections</small>
                     </div>
                 </div>
             </div>
@@ -194,5 +210,43 @@
     <script src="exif.js"></script>
     <script src="config.js"></script>
     <script src="script.js"></script>
+    
+    <!-- Initialize hero background -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Set hero background image from your photos
+            const heroBackground = document.querySelector('.hero-background');
+            if (heroBackground) {
+                // Try to use a hero image from your collection
+                const heroImages = [
+                    'photos/porsche-gt3rs/hero.jpg',
+                    'photos/audi-a3/hero.jpg',
+                    'background/hero.jpg'
+                ];
+                
+                // Test which hero image exists and use the first available
+                let imageLoaded = false;
+                heroImages.forEach((imagePath, index) => {
+                    if (!imageLoaded) {
+                        const img = new Image();
+                        img.onload = () => {
+                            if (!imageLoaded) {
+                                heroBackground.style.backgroundImage = `url('${imagePath}')`;
+                                heroBackground.style.backgroundSize = 'cover';
+                                heroBackground.style.backgroundPosition = 'center';
+                                heroBackground.style.backgroundRepeat = 'no-repeat';
+                                imageLoaded = true;
+                                console.log(`✓ Hero background set: ${imagePath}`);
+                            }
+                        };
+                        img.onerror = () => {
+                            console.log(`✗ Hero image not found: ${imagePath}`);
+                        };
+                        img.src = imagePath;
+                    }
+                });
+            }
+        });
+    </script>
 </body>
 </html>
