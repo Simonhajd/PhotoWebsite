@@ -789,7 +789,16 @@ class CarPhotographyPortfolio {
         }
         
         if (lightboxCounter) {
-            lightboxCounter.textContent = `${index + 1} / ${this.images.length}`;
+            // Show position within the current shoot, not all images
+            const shootImages = this.images.filter(img => img.shootId === image.shootId);
+            const currentShootIndex = shootImages.findIndex(img => img.src === image.src);
+            lightboxCounter.textContent = `${currentShootIndex + 1} / ${shootImages.length}`;
+        }
+        
+        // Update shoot name indicator
+        const lightboxShootName = document.getElementById('lightbox-shoot-name');
+        if (lightboxShootName && image.shootTitle) {
+            lightboxShootName.textContent = image.shootTitle;
         }
 
         // Update navigation buttons
@@ -834,9 +843,24 @@ class CarPhotographyPortfolio {
     previousImage() {
         if (this.images.length === 0) return;
         
-        this.currentImageIndex = this.currentImageIndex > 0 
-            ? this.currentImageIndex - 1 
-            : this.images.length - 1;
+        const currentImage = this.images[this.currentImageIndex];
+        if (!currentImage) return;
+        
+        // Get all images from the same shoot
+        const shootImages = this.images.filter(img => img.shootId === currentImage.shootId);
+        if (shootImages.length === 0) return;
+        
+        // Find current position within the shoot
+        const currentShootIndex = shootImages.findIndex(img => img.src === currentImage.src);
+        
+        // Navigate to previous image in the same shoot
+        const nextShootIndex = currentShootIndex > 0 
+            ? currentShootIndex - 1 
+            : shootImages.length - 1;
+            
+        // Find the global index of the previous image in the shoot
+        const previousImage = shootImages[nextShootIndex];
+        this.currentImageIndex = this.images.findIndex(img => img.src === previousImage.src);
         
         this.updateLightboxContent();
     }
@@ -844,9 +868,24 @@ class CarPhotographyPortfolio {
     nextImage() {
         if (this.images.length === 0) return;
         
-        this.currentImageIndex = this.currentImageIndex < this.images.length - 1 
-            ? this.currentImageIndex + 1 
+        const currentImage = this.images[this.currentImageIndex];
+        if (!currentImage) return;
+        
+        // Get all images from the same shoot
+        const shootImages = this.images.filter(img => img.shootId === currentImage.shootId);
+        if (shootImages.length === 0) return;
+        
+        // Find current position within the shoot
+        const currentShootIndex = shootImages.findIndex(img => img.src === currentImage.src);
+        
+        // Navigate to next image in the same shoot
+        const nextShootIndex = currentShootIndex < shootImages.length - 1 
+            ? currentShootIndex + 1 
             : 0;
+            
+        // Find the global index of the next image in the shoot
+        const nextImage = shootImages[nextShootIndex];
+        this.currentImageIndex = this.images.findIndex(img => img.src === nextImage.src);
         
         this.updateLightboxContent();
     }
@@ -885,7 +924,21 @@ class CarPhotographyPortfolio {
         }
         
         if (lightboxCounter) {
-            lightboxCounter.textContent = `${this.currentImageIndex + 1} / ${this.images.length}`;
+            // Show position within the current shoot, not all images
+            const currentImage = this.images[this.currentImageIndex];
+            if (currentImage) {
+                const shootImages = this.images.filter(img => img.shootId === currentImage.shootId);
+                const currentShootIndex = shootImages.findIndex(img => img.src === currentImage.src);
+                lightboxCounter.textContent = `${currentShootIndex + 1} / ${shootImages.length}`;
+            } else {
+                lightboxCounter.textContent = `${this.currentImageIndex + 1} / ${this.images.length}`;
+            }
+        }
+        
+        // Update shoot name indicator
+        const lightboxShootName = document.getElementById('lightbox-shoot-name');
+        if (lightboxShootName && image.shootTitle) {
+            lightboxShootName.textContent = image.shootTitle;
         }
 
         this.updateLightboxNavigation();
@@ -897,7 +950,17 @@ class CarPhotographyPortfolio {
         const prevButton = document.querySelector('.lightbox-prev');
         const nextButton = document.querySelector('.lightbox-next');
 
-        if (this.images.length <= 1) {
+        // Check if we have images in the current shoot
+        const currentImage = this.images[this.currentImageIndex];
+        if (!currentImage) {
+            if (prevButton) prevButton.style.display = 'none';
+            if (nextButton) nextButton.style.display = 'none';
+            return;
+        }
+        
+        const shootImages = this.images.filter(img => img.shootId === currentImage.shootId);
+        
+        if (shootImages.length <= 1) {
             if (prevButton) prevButton.style.display = 'none';
             if (nextButton) nextButton.style.display = 'none';
         } else {
@@ -907,15 +970,23 @@ class CarPhotographyPortfolio {
     }
 
     preloadAdjacentImages() {
-        const preloadIndexes = [
-            this.currentImageIndex - 1,
-            this.currentImageIndex + 1
+        const currentImage = this.images[this.currentImageIndex];
+        if (!currentImage) return;
+        
+        // Get images from the same shoot
+        const shootImages = this.images.filter(img => img.shootId === currentImage.shootId);
+        const currentShootIndex = shootImages.findIndex(img => img.src === currentImage.src);
+        
+        // Determine adjacent indexes within the shoot
+        const adjacentShootIndexes = [
+            currentShootIndex - 1,
+            currentShootIndex + 1
         ];
 
-        preloadIndexes.forEach(index => {
-            if (index >= 0 && index < this.images.length) {
+        adjacentShootIndexes.forEach(shootIndex => {
+            if (shootIndex >= 0 && shootIndex < shootImages.length) {
                 const img = new Image();
-                img.src = this.images[index].src;
+                img.src = shootImages[shootIndex].src;
             }
         });
     }

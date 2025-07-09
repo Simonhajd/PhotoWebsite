@@ -1097,6 +1097,16 @@ a:hover {
     padding: var(--spacing-xs) var(--spacing-sm);
     border-radius: var(--border-radius);
     font-size: 0.875rem;
+    text-align: center;
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+}
+
+.lightbox-shoot-name {
+    font-size: 0.75rem;
+    opacity: 0.8;
+    margin-bottom: 2px;
+    font-weight: var(--font-weight-medium);
 }
 
 /* ==========================================================================
