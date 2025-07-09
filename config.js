@@ -14,38 +14,36 @@ window.portfolioConfig = {
     // Each shoot can have its own subfolder and cover image
     shoots: [
         {
-            id: 'light-series',
-            title: 'Light Studies',
-            folder: 'photos/', // Main folder for this series
-            coverImage: 'Light-16.jpg', // Cover image for this group
-            coverColor: 'rgba(26, 26, 46, 0.8)', // Tinted overlay color for cover
-            images: [
-                'Light-16.jpg',
-                'Light-17.jpg',
-                'Light-18.jpg',
-                'Light-19.jpg',
-                'Light-20.jpg',
-                'Light-21.jpg',
-                'Light-22.jpg',
-                'Light-23.jpg'
-            ]
-        },
-        // Example shoots with subfolders (uncomment and customize):
-        {
             id: 'porsche-gt3rs',
             title: 'Porsche 911 GT3 RS',
             folder: 'photos/porsche-gt3rs/', // Subfolder for Porsche shoot
-            coverImage: 'light-1.jpg', // First image will be cover if this doesn't exist
-            coverColor: 'rgba(160, 160, 160, 0.8)' // Porsche gray tint
-            // images: [] - Will auto-detect all images in the folder
+            coverImage: 'hero.jpg', // Use the hero image as cover
+            coverColor: 'rgba(59, 130, 246, 0.8)', // Porsche blue tint
+            images: [
+                'GT3RS-08.jpg',
+                'GT3RS-09.jpg',
+                'GT3RS-10.jpg',
+                'GT3RS-11.jpg',
+                'GT3RS-12.jpg',
+                'GT3RS-14.jpg',
+                'hero.jpg'
+            ]
         },
         {
             id: 'audi-a3',
             title: 'Audi A3',
             folder: 'photos/audi-a3/', // Subfolder for Audi shoot
-            coverImage: 'Light-1.jpg',
-            coverColor: 'rgba(160, 160, 160, 0.8)' // Audi gray tint
-            // images: [] - Will auto-detect all images in the folder
+            coverImage: 'hero.jpg', // Use the hero image as cover
+            coverColor: 'rgba(220, 38, 38, 0.8)', // Audi red tint
+            images: [
+                'A3-1.jpg',
+                'A3-2.jpg',
+                'A3-3.jpg',
+                'A3-5.jpg',
+                'A3-6.jpg',
+                'A3-7.jpg',
+                'hero.jpg'
+            ]
         }
     ],
     
