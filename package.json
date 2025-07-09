@@ -1,0 +1,22 @@
+{
+  "name": "car-photography-portfolio",
+  "version": "1.0.0",
+  "description": "Premium car photography portfolio with image optimization",
+  "scripts": {
+    "optimize": "node optimize-images.js",
+    "serve": "python -m http.server 8000 || npx http-server",
+    "dev": "npx live-server --port=8000"
+  },
+  "devDependencies": {
+    "sharp": "^0.33.5"
+  },
+  "keywords": [
+    "photography",
+    "portfolio",
+    "automotive",
+    "responsive",
+    "image-optimization"
+  ],
+  "author": "Simon Hajduk",
+  "license": "MIT"
+}

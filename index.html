@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simon Hajduk Photography - @CarsfromWa</title>
+    <meta name="description" content="Premium automotive photography from Western Australia. Follow @CarsfromWa for the latest car photography showcasing exceptional machines where engineering meets artistry.">
+    <meta name="keywords" content="car photography, automotive photography, Western Australia, @CarsfromWa, Simon Hajduk, luxury cars, portfolio">
+    
+    <!-- Preload critical fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="style.css">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📸</text></svg>">
+</head>
+<body class="dark-theme">
+    <!-- Navigation -->
+    <nav class="navbar" role="navigation" aria-label="Main navigation">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <h1>@CarsfromWa</h1>
+            </div>
+            
+            <!-- Desktop Navigation -->
+            <ul class="nav-menu" role="menubar">
+                <li role="none"><a href="#home" role="menuitem" aria-current="page">Home</a></li>
+                <li role="none"><a href="#gallery" role="menuitem">Gallery</a></li>
+                <li role="none"><a href="#contact" role="menuitem">Contact</a></li>
+                <li role="none">
+                    <button class="theme-toggle" aria-label="Toggle dark/light theme" title="Toggle theme">
+                        <span class="theme-icon">🌙</span>
+                    </button>
+                </li>
+            </ul>
+            
+            <!-- Mobile Menu Button -->
+            <button class="mobile-menu-toggle" aria-label="Toggle mobile menu" aria-expanded="false">
+                <span class="hamburger"></span>
+                <span class="hamburger"></span>
+                <span class="hamburger"></span>
+            </button>
+        </div>
+        
+        <!-- Mobile Navigation Menu -->
+        <div class="mobile-menu" role="menu">
+            <a href="#home" role="menuitem">Home</a>
+            <a href="#gallery" role="menuitem">Gallery</a>
+            <a href="#contact" role="menuitem">Contact</a>
+            <button class="theme-toggle mobile" aria-label="Toggle dark/light theme">
+                <span class="theme-icon">🌙</span>
+                <span class="theme-text">Dark Mode</span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main id="home">
+        <!-- Hero Section -->
+        <section class="hero" role="banner">
+            <div class="hero-background"></div>
+            <div class="hero-content">
+                <h2 class="hero-title">@CarsfromWa</h2>
+                <p class="hero-subtitle">Where engineering meets artistry</p>
+            </div>
+        </section>
+
+        <!-- Gallery Section -->
+        <section class="gallery-section" id="gallery">
+            <div class="container">
+                <!-- Loading Indicator -->
+                <div class="loading-indicator" id="loading">
+                    <div class="spinner"></div>
+                    <p>Loading gallery...</p>
+                </div>
+                
+                <!-- Gallery Grid -->
+                <div class="gallery-grid" id="gallery-grid" role="group" aria-label="Car photography gallery">
+                    <!-- Images will be dynamically loaded here -->
+                </div>
+                
+                <!-- No Images Message -->
+                <div class="no-images" id="no-images" style="display: none;">
+                    <div class="no-images-content">
+                        <div class="no-images-icon">📸</div>
+                        <h4>Gallery Coming Soon</h4>
+                        <p>Add your stunning car photos to the <code>photos/</code> folder to see them here.</p>
+                        <small>Supported formats: JPG, PNG, WebP</small>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- About Section (hidden - uncomment to re-enable) -->
+        <!--
+        <section class="about-section" id="about">
+            <div class="container">
+                <div class="about-content">
+                    <h3>About</h3>
+                    <p>Passionate about capturing the perfect blend of engineering excellence and artistic beauty. Each photograph tells the story of automotive craftsmanship, from classic legends to modern supercars.</p>
+                    <div class="about-stats">
+                        <div class="stat">
+                            <span class="stat-number" id="photo-count">0</span>
+                            <span class="stat-label">Photos</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-number">500+</span>
+                            <span class="stat-label">Hours</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-number">50+</span>
+                            <span class="stat-label">Models</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        -->
+
+        <!-- Contact Section -->
+        <section class="contact-section" id="contact">
+            <div class="container">
+                <div class="contact-content">
+                    <h3>Contact</h3>
+                    <p>Ready to collaborate on your next automotive project?</p>
+                    <div class="contact-info">
+                        <a href="https://instagram.com/CarsfromWa" target="_blank" rel="noopener noreferrer" class="contact-link">
+                            <span class="contact-icon">📸</span>
+                            @CarsfromWa
+                        </a>
+                        <a href="mailto:simonhajuk@outlook.com" class="contact-link">
+                            <span class="contact-icon">✉️</span>
+                            simonhajuk@outlook.com
+                        </a>
+
+
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Lightbox Modal -->
+    <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="lightbox-title">
+        <div class="lightbox-overlay" tabindex="-1"></div>
+        <div class="lightbox-container">
+            <button class="lightbox-close" aria-label="Close lightbox" title="Close (ESC)">×</button>
+            
+            <button class="lightbox-download" aria-label="Download image" title="Download Image">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                    <polyline points="7,10 12,15 17,10"></polyline>
+                    <line x1="12" y1="15" x2="12" y2="3"></line>
+                </svg>
+            </button>
+            
+            <button class="lightbox-nav lightbox-prev" aria-label="Previous image" title="Previous (←)">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="15,18 9,12 15,6"></polyline>
+                </svg>
+            </button>
+            
+            <button class="lightbox-nav lightbox-next" aria-label="Next image" title="Next (→)">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="9,18 15,12 9,6"></polyline>
+                </svg>
+            </button>
+            
+            <div class="lightbox-content">
+                <img class="lightbox-image" id="lightbox-image" alt="" />
+                <div class="lightbox-info">
+                    <h4 class="lightbox-title" id="lightbox-title"></h4>
+                    <div class="lightbox-meta" id="lightbox-meta"></div>
+                    <div class="lightbox-exif" id="lightbox-exif"></div>
+                </div>
+            </div>
+            
+            <div class="lightbox-counter">
+                <span id="lightbox-counter">1 / 1</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>Simon Hajduk Photography • @CarsfromWa</p>
+        </div>
+    </footer>
+
+    <script src="exif.js"></script>
+    <script src="config.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

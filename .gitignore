@@ -1,0 +1,70 @@
+# GitHub Pages - Car Photography Portfolio
+# Exclude development and build files that aren't needed for the live site
+
+# Node.js dependencies and build files
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+package-lock.json
+
+# Development and optimization scripts
+optimize-images.js
+optimize-images.bat
+setup-folders.ps1
+config-helper.js
+
+# Documentation and guides (keep README.md for GitHub)
+MANUAL_OPTIMIZATION_GUIDE.txt
+OPTIMIZATION.md
+photos/README_OPTIMIZATION.txt
+photos/*/README.txt
+background/README.txt
+
+# Debug and test files
+debug.html
+test.html
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+desktop.ini
+
+# IDE and editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Logs and temporary files
+*.log
+*.tmp
+*.temp
+
+# Backup files
+*.bak
+*.backup
+
+# Original/unoptimized images (optional - uncomment if you want to exclude originals)
+# Keep originals for now since your optimization may not be complete
+# photos/**/*.jpg
+# photos/**/*.jpeg
+# photos/**/*.png
+# !photos/**/thumbs/
+# !photos/**/prevs/
+
+# Environment and config files that might contain sensitive info
+.env
+.env.local
+.env.production
+
+# Cache directories
+.cache/
+dist/
+build/
