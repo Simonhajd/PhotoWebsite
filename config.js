@@ -18,7 +18,7 @@ window.portfolioConfig = {
             title: 'Porsche 911 GT3 RS',
             folder: 'photos/porsche-gt3rs/', // Subfolder for Porsche shoot
             coverImage: 'hero.jpg', // Use the hero image as cover
-            coverColor: 'rgba(59, 130, 246, 0.8)', // Porsche blue tint
+            coverColor: 'rgba(143, 143, 143, 0.3)', // Porsche blue tint
             images: [
                 'GT3RS-08.jpg',
                 'GT3RS-09.jpg',
@@ -34,7 +34,7 @@ window.portfolioConfig = {
             title: 'Audi A3',
             folder: 'photos/audi-a3/', // Subfolder for Audi shoot
             coverImage: 'hero.jpg', // Use the hero image as cover
-            coverColor: 'rgba(220, 38, 38, 0.8)', // Audi red tint
+            coverColor: 'rgba(143, 143, 143, 0.3)', // Audi red tint
             images: [
                 'A3-1.jpg',
                 'A3-2.jpg',
