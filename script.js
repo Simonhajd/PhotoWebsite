@@ -321,10 +321,22 @@ class CarPhotographyPortfolio {
                 }
                 
                 if (shootImages.length > 0) {
+                    // Find cover image data more reliably
+                    let coverImageData = shootImages.find(img => img.filename === shoot.coverImage);
+                    if (!coverImageData) {
+                        // If specified cover image not found, try variations
+                        coverImageData = shootImages.find(img => 
+                            img.filename.toLowerCase().includes('hero') || 
+                            img.filename.toLowerCase().includes('cover')
+                        ) || shootImages[0];
+                    }
+                    
+                    console.log(`📸 Cover image for ${shoot.title}:`, coverImageData?.filename || 'Not found');
+                    
                     this.shoots.push({
                         ...shoot,
                         images: shootImages,
-                        coverImageData: shootImages.find(img => img.filename === shoot.coverImage) || shootImages[0]
+                        coverImageData: coverImageData
                     });
                 }
             }
@@ -528,13 +540,23 @@ class CarPhotographyPortfolio {
         coverContainer.className = 'shoot-cover';
         
         const coverImage = document.createElement('img');
-        coverImage.src = shoot.coverImageData.src;
+        // Use the cover image data source, fallback to first image, then to original
+        coverImage.src = shoot.coverImageData?.src || shoot.images[0]?.src || '';
         coverImage.alt = shoot.title;
         coverImage.loading = 'lazy';
+        
+        // Add error handling for failed image loads
+        coverImage.onerror = () => {
+            console.warn(`Failed to load cover image for ${shoot.title}, trying fallback`);
+            // Try the raw filename path as fallback
+            if (shoot.coverImage && !coverImage.src.includes(shoot.coverImage)) {
+                coverImage.src = shoot.folder + shoot.coverImage;
+            }
+        };
 
         const overlay = document.createElement('div');
         overlay.className = 'shoot-overlay';
-        overlay.style.backgroundColor = shoot.coverColor || '#1a1a2e';
+        overlay.style.backgroundColor = shoot.coverColor || 'rgba(26, 26, 46, 0.8)';
 
         const title = document.createElement('h3');
         title.className = 'shoot-title';
@@ -570,9 +592,13 @@ class CarPhotographyPortfolio {
         section.appendChild(coverContainer);
         section.appendChild(imagesGrid);
 
-        // Add expand/collapse functionality
+        // Add expand/collapse functionality with better mobile support
         let isExpanded = false;
-        expandButton.addEventListener('click', () => {
+        
+        const toggleExpand = (event) => {
+            event.preventDefault();
+            event.stopPropagation();
+            
             isExpanded = !isExpanded;
             
             if (isExpanded) {
@@ -594,6 +620,13 @@ class CarPhotographyPortfolio {
                         }, index * 50);
                     });
                 }, 100);
+                
+                // Scroll to the expanded section on mobile
+                if (window.innerWidth <= 767) {
+                    setTimeout(() => {
+                        section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }, 300);
+                }
             } else {
                 imagesGrid.style.display = 'none';
                 expandButton.innerHTML = `
@@ -604,6 +637,15 @@ class CarPhotographyPortfolio {
                 `;
                 section.classList.remove('expanded');
             }
+        };
+        
+        // Add both click and touch events for better mobile support
+        expandButton.addEventListener('click', toggleExpand);
+        expandButton.addEventListener('touchend', toggleExpand);
+        
+        // iOS Safari: prevent double-tap zoom on button
+        expandButton.addEventListener('touchstart', (e) => {
+            e.preventDefault();
         });
 
         return section;
@@ -668,14 +710,29 @@ class CarPhotographyPortfolio {
         item.appendChild(img);
         item.appendChild(downloadBtn);
 
-        // Add click and keyboard event listeners
-        const openLightbox = () => this.openLightbox(index);
+        // Add click and keyboard event listeners with better mobile support
+        const openLightbox = (event) => {
+            event?.preventDefault();
+            this.openLightbox(index);
+        };
+        
         item.addEventListener('click', openLightbox);
         item.addEventListener('keydown', (e) => {
             if (e.key === 'Enter' || e.key === ' ') {
                 e.preventDefault();
                 openLightbox();
             }
+        });
+        
+        // iOS Safari: Better touch handling
+        item.addEventListener('touchend', (e) => {
+            e.preventDefault();
+            openLightbox();
+        });
+        
+        // Prevent double-tap zoom on iOS Safari
+        item.addEventListener('touchstart', (e) => {
+            e.stopPropagation();
         });
 
         return item;

@@ -113,6 +113,8 @@
 html {
     scroll-behavior: smooth;
     font-size: 16px;
+    /* iOS Safari smooth scrolling fix */
+    -webkit-overflow-scrolling: touch;
 }
 
 body {
@@ -123,6 +125,14 @@ body {
     background-color: var(--color-background);
     transition: background-color var(--transition-normal), color var(--transition-normal);
     overflow-x: hidden;
+    
+    /* iOS Safari font rendering */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    
+    /* iOS Safari touch improvements */
+    -webkit-touch-callout: none;
+    -webkit-tap-highlight-color: transparent;
 }
 
 /* Typography */
@@ -195,6 +205,7 @@ a:hover {
     right: 0;
     height: var(--navbar-height);
     background: rgba(10, 10, 10, 0.95);
+    -webkit-backdrop-filter: blur(20px);
     backdrop-filter: blur(20px);
     border-bottom: 1px solid var(--color-border);
     z-index: var(--z-sticky);
@@ -507,6 +518,31 @@ a:hover {
     height: 100%;
     object-fit: cover;
     transition: transform var(--transition-slow);
+    
+    /* iOS Safari image optimizations */
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    
+    /* Handle broken images gracefully */
+    background: var(--color-surface);
+    min-height: 100%;
+}
+
+/* Hide broken image icon and show a fallback */
+.shoot-cover img:not([src]),
+.shoot-cover img[src=""] {
+    opacity: 0;
+}
+
+.shoot-cover img::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, var(--color-surface) 0%, rgba(0,0,0,0.3) 100%);
+    z-index: -1;
 }
 
 .shoot-overlay {
@@ -552,6 +588,7 @@ a:hover {
     display: flex;
     align-items: center;
     gap: var(--spacing-xs);
+    -webkit-backdrop-filter: blur(10px);
     backdrop-filter: blur(10px);
 }
 
@@ -705,6 +742,7 @@ a:hover {
     transform: scale(0.8);
     transition: all var(--transition-fast);
     z-index: 10;
+    -webkit-backdrop-filter: blur(10px);
     backdrop-filter: blur(10px);
 }
 
@@ -904,6 +942,7 @@ a:hover {
     width: 100%;
     height: 100%;
     background: var(--overlay-backdrop);
+    -webkit-backdrop-filter: blur(10px);
     backdrop-filter: blur(10px);
 }
 
@@ -1088,19 +1127,72 @@ a:hover {
     
     .hero {
         padding: calc(var(--navbar-height) + var(--spacing-lg)) var(--spacing-sm) var(--spacing-xl);
+        /* iOS Safari safe area support */
+        padding-left: max(var(--spacing-sm), env(safe-area-inset-left));
+        padding-right: max(var(--spacing-sm), env(safe-area-inset-right));
     }
     
     .gallery-grid {
         grid-template-columns: 1fr;
         gap: var(--spacing-sm);
+        padding: 0 var(--spacing-sm);
     }
     
     .gallery-item img {
         height: 250px;
     }
     
+    /* Mobile fixes for shoot sections */
+    .shoot-section {
+        margin-bottom: var(--spacing-xl);
+    }
+    
+    .shoot-cover {
+        height: 250px;
+        margin-bottom: var(--spacing-md);
+        /* Fix iOS Safari image rendering */
+        -webkit-transform: translateZ(0);
+        transform: translateZ(0);
+    }
+    
+    .shoot-cover img {
+        /* iOS Safari image loading fix */
+        -webkit-backface-visibility: hidden;
+        backface-visibility: hidden;
+        -webkit-transform: translate3d(0, 0, 0);
+        transform: translate3d(0, 0, 0);
+    }
+    
+    .shoot-title {
+        font-size: clamp(1.25rem, 5vw, 2rem);
+    }
+    
+    .shoot-expand-btn {
+        padding: var(--spacing-xs) var(--spacing-md);
+        font-size: 0.9rem;
+        /* Fix iOS Safari button rendering */
+        -webkit-appearance: none;
+        appearance: none;
+        border-radius: 25px;
+        /* Improve touch target size */
+        min-height: 44px;
+        touch-action: manipulation;
+        /* Prevent text selection on touch */
+        -webkit-user-select: none;
+        user-select: none;
+    }
+    
+    .shoot-images-grid {
+        grid-template-columns: 1fr;
+        gap: var(--spacing-sm);
+        margin-top: var(--spacing-sm);
+    }
+    
     .lightbox-container {
         padding: var(--spacing-sm);
+        /* iOS Safari safe area support */
+        padding-top: max(var(--spacing-sm), env(safe-area-inset-top));
+        padding-bottom: max(var(--spacing-sm), env(safe-area-inset-bottom));
     }
     
     .lightbox-close {
@@ -1109,6 +1201,9 @@ a:hover {
         width: 40px;
         height: 40px;
         font-size: 1.5rem;
+        /* iOS Safari safe area adjustment */
+        top: max(var(--spacing-sm), env(safe-area-inset-top));
+        right: max(var(--spacing-sm), env(safe-area-inset-right));
     }
     
     .lightbox-nav {
@@ -1118,14 +1213,18 @@ a:hover {
     
     .lightbox-prev {
         left: var(--spacing-sm);
+        left: max(var(--spacing-sm), env(safe-area-inset-left));
     }
     
     .lightbox-next {
         right: var(--spacing-sm);
+        right: max(var(--spacing-sm), env(safe-area-inset-right));
     }
     
     .lightbox-image {
         max-height: 60vh;
+        /* iOS Safari viewport units fix */
+        max-height: 60dvh;
     }
 }
 
