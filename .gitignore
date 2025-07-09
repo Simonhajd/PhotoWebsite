@@ -68,3 +68,6 @@ desktop.ini
 .cache/
 dist/
 build/
+
+#extra:
+README.md
